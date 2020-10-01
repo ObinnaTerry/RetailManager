@@ -4,5 +4,6 @@
     [ProductId] INT NOT NULL, 
     [Quantity] INT NOT NULL DEFAULT 1, 
     [PurchasePrice] MONEY NOT NULL , 
-    [Purchasedate] DATETIME2 NOT NULL DEFAULT getutcdate()
+    [Purchasedate] DATETIME2 NOT NULL DEFAULT getutcdate(), 
+    CONSTRAINT [FK_Inventory_ToProducts] FOREIGN KEY ([ProductId]) REFERENCES [Product]([Id])
 )
