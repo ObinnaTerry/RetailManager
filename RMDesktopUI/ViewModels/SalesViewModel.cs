@@ -66,6 +66,21 @@ namespace RMDesktopUI.ViewModels
             }
         }
 
+        /// <summary>
+        /// Resets the sales page after each checkout
+        /// </summary>
+        private async Task ResetSalesViewModel()
+        {
+            Cart = new BindingList<CartItemDisplayModel>(); //overwrite the cart with an empty one
+            await LoadProducts();  //reload products from database to get the latest values
+
+            //refresh the tax variables. They will become zero bacause the cart list is empty
+            NotifyOfPropertyChange(() => SubTotal);
+            NotifyOfPropertyChange(() => Tax);
+            NotifyOfPropertyChange(() => Total);
+            NotifyOfPropertyChange(() => CanCheckOut);
+        }
+
         private CartItemDisplayModel _selectedCartItem;
 
         public CartItemDisplayModel SelectedCartItem
@@ -204,7 +219,7 @@ namespace RMDesktopUI.ViewModels
             {
                 bool output = false;
 
-                if (SelectedCartItem != null && SelectedCartItem?.Product.QuantityInStock > 0)
+                if (SelectedCartItem != null && SelectedCartItem?.QuantityInCart > 0)
                 {
                     output = true;
                 }
@@ -231,6 +246,7 @@ namespace RMDesktopUI.ViewModels
             NotifyOfPropertyChange(() => Tax);
             NotifyOfPropertyChange(() => Total);
             NotifyOfPropertyChange(() => CanCheckOut);
+            NotifyOfPropertyChange(() => CanAddToCart);
         }
 
         public bool CanCheckOut
@@ -262,6 +278,8 @@ namespace RMDesktopUI.ViewModels
             }
 
             await _saleEndpoint.Postsale(sale);
+
+            await ResetSalesViewModel();  //reset sales page
         }
 
     }
