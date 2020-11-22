@@ -10,15 +10,6 @@ namespace RMDataManager.Library.DataAccess
 {
     public class SaleData
     {
-        //public List<ProductModel> GetProduct()
-        //{
-        //    SqlDataAccess sql = new SqlDataAccess();
-
-        //    var output = sql.LoadData<ProductModel, dynamic>("dbo.spProduct_GetAll", new { }, "RMData");
-
-        //    return output;
-        //}
-
         public void SaveSale(SaleModel saleInfo, string cashierId)
         {
             List<SaleDetailDBModel> details = new List<SaleDetailDBModel>();
@@ -88,6 +79,15 @@ namespace RMDataManager.Library.DataAccess
                 }
             }
           
+        }
+
+        public List<SaleReportModel> GetSaleReport()
+        {
+            SqlDataAccess sql = new SqlDataAccess();
+
+            var output = sql.LoadData<SaleReportModel, dynamic>("dbo.spSale_SaleReport", new { }, "TRMData");
+
+            return output;
         }
     }
 }
